@@ -4,8 +4,8 @@
 		<template v-else>
 			<h1>На скільки ти кіберспортивний експерт</h1>
 			<p class="number">Запитання № {{getNumberQuestion}}</p>
-			<p class="question">{{getQuestion[getNumberQuestion -1 ].question}}</p>
-			<template v-for="(answers, i) in getQuestion[getNumberQuestion - 1 ].answers">
+			<p class="question">{{getQuestion.question}}</p>
+			<template v-for="(answers, i) in getQuestion.answers">
 				<div class="answers">
 					<input :id="i" type="radio" :value="answers" v-model="answer"/>
 					<label :for="i">{{answers}}</label>
@@ -16,10 +16,12 @@
 			<div class="footer">
 				<button v-if="getTotalQuestion === getNumberQuestion"
 				        @click="handleFinish"
-				        :disabled="!answer">Завершити</button>
+				        :disabled="!answer">Завершити
+				</button>
 				<button v-else
 				        :disabled="!answer"
-				        @click="hendleNextQuestions">Продовжити</button>
+				        @click="hendleNextQuestions">Продовжити
+				</button>
 			</div>
 			<div class="message">Щоб продовжити, виберіть одну з відповідей!</div>
 		</template>
@@ -39,10 +41,10 @@
 		computed: {
 			...mapGetters([
 				'getQuestion',
-			  'isDataLoad',
-			  'getTotalQuestion',
-			  'getNumberQuestion',
-			  'getProgress',
+				'isDataLoad',
+				'getTotalQuestion',
+				'getNumberQuestion',
+				'getProgress',
 			]),
 		},
 		methods: {

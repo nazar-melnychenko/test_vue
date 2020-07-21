@@ -9,25 +9,24 @@
 <script>
 	export default {
 		name: "Result",
-		 props:{
-			 totalQuestion: '',
-			 points: '',
-			 getPercent: ''
-		 },
+		props: {
+			totalQuestion: {type: Number, required: true},
+			points: {type: Number, required: true},
+		},
 	}
 </script>
 
 <style scoped lang="sass">
-.resultWrapper
-	border: 2px solid #ffffff
-	padding: 20px
-	border-radius: 10px
-	max-width: 500px
-	width: 100%
-	margin: 0 10px
-	text-align: center
-
-	h1
+	.resultWrapper
+		border: 2px solid #ffffff
+		padding: 20px
+		border-radius: 10px
+		max-width: 500px
+		width: 100%
+		margin: 0 10px
 		text-align: center
-		color: #555555
+
+		h1
+			text-align: center
+			color: #555555
 </style>

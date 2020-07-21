@@ -1,5 +1,12 @@
 import {fetchQuestionsAPI} from "../../api/api";
 
+const nextStep = (state, answer) => {
+	if (answer === state.questions[state.numberQuestion - 1].correct_answers) {
+		state.points = ++state.points;
+	}
+	state.numberQuestion = ++state.numberQuestion;
+};
+
 export default {
 	state: {
 		questions: [
@@ -14,64 +21,54 @@ export default {
 		points: 0,
 		isFinish: false,
 		isDataLoad: false,
-		progress: 0,
 	},
 	mutations: {
-		setQuestions(state, questions){
+		setQuestions(state, questions) {
 			state.questions = questions;
 			state.totalQuestion = questions.length;
 			state.isDataLoad = true;
 		},
-		setNextQuestion(state, answer){
-			state.progress = Math.ceil(state.numberQuestion / state.totalQuestion * 100);
-			if (answer === state.questions[state.numberQuestion - 1].correct_answers) {
-				state.points = ++state.points;
-			}
-			state.numberQuestion = ++ state.numberQuestion;
+		setNextQuestion(state, answer) {
+			nextStep(state, answer);
 		},
-		setFinish(state, answer){
-			state.progress = Math.ceil(state.numberQuestion / state.totalQuestion * 100);
-			if (answer === state.questions[state.numberQuestion - 1].correct_answers) {
-				state.points = ++state.points;
-			}
-			state.numberQuestion = ++ state.numberQuestion;
+		setFinish(state, answer) {
+			nextStep(state, answer);
 			state.isFinish = true;
-		},
+		}
 	},
 	actions: {
-		 fetchQuestions({commit}){
-			 fetchQuestionsAPI().then(data => commit('setQuestions', data))
+		fetchQuestions({commit}) {
+			fetchQuestionsAPI().then(data => commit('setQuestions', data))
 		},
-		nextQuestions({commit}, answer){
-			commit('setNextQuestion', answer);
+		nextQuestions({commit}, payload) {
+			commit('setNextQuestion', payload);
 		},
 
-		setFinish({commit}, answer){
-			commit('setFinish', answer);
+		setFinish({commit}, payload) {
+			commit('setFinish', payload);
 		}
 	},
 	getters: {
-		isFinish(state){
+		isFinish(state) {
 			return state.isFinish
 		},
-		isDataLoad(state){
+		isDataLoad(state) {
 			return state.isDataLoad
 		},
-		getQuestion(state){
-			return state.questions
+		getQuestion(state) {
+			return state.questions[state.numberQuestion - 1]
 		},
-		getTotalQuestion(state){
+		getTotalQuestion(state) {
 			return state.totalQuestion
 		},
-		getNumberQuestion(state){
+		getNumberQuestion(state) {
 			return state.numberQuestion
 		},
-		getPoints(state){
+		getPoints(state) {
 			return state.points
 		},
-		getProgress(state){
-			return state.progress
+		getProgress(state) {
+			return (state.numberQuestion - 1) / state.totalQuestion * 100;
 		},
-
 	}
 };
